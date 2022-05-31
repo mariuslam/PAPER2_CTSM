@@ -751,7 +751,6 @@ contains
        call init_accum_field (name='TEMP24', units='K',                                             &
             desc='24hr average temperature',  accum_type='timeavg', accum_period=-1,    &
             subgrid_type='pft', numlev=1, init_value=0.0_r8)
-
        this%t_mean_5yr_patch(bounds%begp:bounds%endp) = spval
        call init_accum_field (name='THARD5', units='K', &    
             desc='5 year average of yearly min 2-m temperature for hardening', accum_type='runmean', accum_period=-5, &
@@ -766,7 +765,7 @@ contains
     ! !DESCRIPTION:
     ! Initialize module variables that are associated with
     ! time accumulated fields. This routine is called for both an initial run
-    ! and a restart run (and must therefore must be called after the restart file 
+    ! and a restart run (and must therefore be called after the restart file 
     ! is read in and the accumulation buffer is obtained)
     !
     ! !USES 
@@ -1069,10 +1068,14 @@ contains
            dim1name='pft', &
            long_name='5 year average of min yearly 2-m temperature for hardening', units='K', &
            interpinic_flag='interp', readvar=readvar, data=this%t_mean_5yr_patch)
-      call restartvar(ncid=ncid, flag=flag, varname='T1yrinst', xtype=ncd_double,  &
+      !call restartvar(ncid=ncid, flag=flag, varname='T1yrHARD', xtype=ncd_double,  &
+      !     dim1name='pft', &
+      !     long_name='1 year hardening', units='K', &
+      !     interpinic_flag='interp', readvar=readvar, data=this%t_min_yr_patch)
+      call restartvar(ncid=ncid, flag=flag, varname='TEMP24', xtype=ncd_double,  &
            dim1name='pft', &
-           long_name='1 year instanteneous hardening', units='K', &
-           interpinic_flag='interp', readvar=readvar, data=this%t_min_yr_inst_patch)
+           long_name='24h average temperature', units='K', &
+           interpinic_flag='interp', readvar=readvar, data=this%temp24_patch)
     end if 
 
   end subroutine Restart
